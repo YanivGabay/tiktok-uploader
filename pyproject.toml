@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "tiktok-uploader"
+name = "simple-tiktok-uploader"
 version = "0.1.0"
 description = "Simple TikTok video uploader using Playwright - no API key required"
 readme = "README.md"
