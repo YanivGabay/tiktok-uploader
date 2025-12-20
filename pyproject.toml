@@ -1,0 +1,48 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "tiktok-uploader"
+version = "0.1.0"
+description = "Simple TikTok video uploader using Playwright - no API key required"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.9"
+authors = [
+    { name = "Yaniv Gabay" }
+]
+keywords = ["tiktok", "upload", "video", "automation", "playwright"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Internet",
+    "Topic :: Multimedia :: Video",
+]
+dependencies = [
+    "playwright>=1.40.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-asyncio>=0.21.0",
+]
+
+[project.scripts]
+tiktok-upload = "tiktok_uploader.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/YanivGabay/tiktok-uploader"
+Repository = "https://github.com/YanivGabay/tiktok-uploader"
+Issues = "https://github.com/YanivGabay/tiktok-uploader/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/tiktok_uploader"]
