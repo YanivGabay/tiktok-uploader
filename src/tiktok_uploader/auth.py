@@ -3,8 +3,8 @@
 import base64
 import json
 import os
-import sys
 from pathlib import Path
+from typing import Optional, Union
 
 from playwright.sync_api import sync_playwright
 
@@ -21,7 +21,7 @@ AUTH_COOKIES = {
 
 
 def interactive_login(
-    save_to_file: str | Path | None = None,
+    save_to_file: Optional[Union[str, Path]] = None,
     timeout: int = 300000,  # 5 minutes to complete login
 ) -> str:
     """
@@ -108,9 +108,9 @@ def interactive_login(
 
 
 def get_session(
-    session: str | None = None,
+    session: Optional[str] = None,
     env_var: str = "TIKTOK_SESSION",
-    file_path: str | Path | None = None,
+    file_path: Optional[Union[str, Path]] = None,
 ) -> str:
     """
     Get session from various sources.

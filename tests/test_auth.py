@@ -1,8 +1,5 @@
 """Tests for the auth module"""
 
-import base64
-import json
-import os
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
@@ -167,7 +164,8 @@ class TestInteractiveLogin:
             mock_page.wait_for_timeout = MagicMock()
 
             # This test verifies the function signature accepts save_to_file
-            from tiktok_uploader.auth import interactive_login
             import inspect
+
+            from tiktok_uploader.auth import interactive_login
             sig = inspect.signature(interactive_login)
             assert "save_to_file" in sig.parameters

@@ -1,15 +1,14 @@
 """Tests for custom exceptions"""
 
-import pytest
 
 from tiktok_uploader.exceptions import (
-    TikTokUploaderError,
-    SessionExpiredError,
     LoginRequiredError,
+    SessionExpiredError,
+    TikTokUploaderError,
+    UnsupportedFormatError,
     UploadFailedError,
     VideoNotFoundError,
     VideoTooLargeError,
-    UnsupportedFormatError,
 )
 
 

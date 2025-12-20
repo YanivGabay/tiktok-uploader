@@ -5,13 +5,13 @@ import sys
 from pathlib import Path
 
 from . import __version__
-from .uploader import TikTokUploader
-from .auth import interactive_login, print_session_instructions, get_session
+from .auth import get_session, interactive_login, print_session_instructions
 from .exceptions import (
-    TikTokUploaderError,
     LoginRequiredError,
     SessionExpiredError,
+    TikTokUploaderError,
 )
+from .uploader import TikTokUploader
 
 
 def cmd_auth(args):
@@ -99,7 +99,7 @@ def cmd_check(args):
 
         # Try a quick validation
         print("   Validating session...")
-        uploader = TikTokUploader(session=session, headless=True)
+        _ = TikTokUploader(session=session, headless=True)  # noqa: F841
         # Could add a validation method here
         print("   Session appears valid")
         return 0
@@ -188,7 +188,7 @@ Environment Variables:
     )
 
     # Check command
-    check_parser = subparsers.add_parser(
+    subparsers.add_parser(
         "check",
         help="Check if session is valid",
     )

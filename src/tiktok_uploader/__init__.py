@@ -13,15 +13,15 @@ Usage:
     print(result.status)
 """
 
-from .uploader import TikTokUploader, upload, upload_many
 from .auth import get_session, interactive_login
 from .exceptions import (
-    TikTokUploaderError,
-    SessionExpiredError,
-    UploadFailedError,
     LoginRequiredError,
+    SessionExpiredError,
+    TikTokUploaderError,
+    UploadFailedError,
     VideoNotFoundError,
 )
+from .uploader import TikTokUploader, upload, upload_many
 
 __version__ = "0.1.0"
 __all__ = [

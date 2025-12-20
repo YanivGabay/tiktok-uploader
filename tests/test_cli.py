@@ -5,7 +5,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from tiktok_uploader.cli import main, cmd_auth, cmd_upload, cmd_check
+from tiktok_uploader.cli import cmd_auth, cmd_check, main
 
 
 class TestCLIMain:
@@ -82,7 +82,7 @@ class TestCLIUploadCommand:
                     mock_instance.upload.return_value = MagicMock(success=True)
                     mock_uploader.return_value = mock_instance
 
-                    result = main()
+                    main()
 
                     # Check that visibility was passed
                     mock_instance.upload.assert_called_once()

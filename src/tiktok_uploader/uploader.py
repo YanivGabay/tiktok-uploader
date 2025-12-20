@@ -1,22 +1,24 @@
 """Core TikTok upload functionality"""
 
-import os
+from __future__ import annotations
+
 import base64
 import json
 import logging
+import os
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Callable, Literal
+from typing import Callable, Literal, Optional, Union
 
-from playwright.sync_api import sync_playwright, Page, BrowserContext
+from playwright.sync_api import BrowserContext, Page, sync_playwright
 
 from .exceptions import (
-    SessionExpiredError,
     LoginRequiredError,
+    SessionExpiredError,
+    UnsupportedFormatError,
     UploadFailedError,
     VideoNotFoundError,
     VideoTooLargeError,
-    UnsupportedFormatError,
 )
 
 logger = logging.getLogger(__name__)
@@ -32,10 +34,10 @@ SUPPORTED_FORMATS = {".mp4", ".mov", ".webm"}
 class UploadResult:
     """Result of an upload operation"""
     success: bool
-    video_id: str | None = None
-    video_url: str | None = None
+    video_id: Optional[str] = None
+    video_url: Optional[str] = None
     status: str = ""
-    error: str | None = None
+    error: Optional[str] = None
 
 
 class TikTokUploader:
@@ -49,7 +51,7 @@ class TikTokUploader:
 
     def __init__(
         self,
-        session: str | None = None,
+        session: Optional[str] = None,
         headless: bool = True,
         timeout: int = 60000,
         debug: bool = False,
@@ -93,7 +95,7 @@ class TikTokUploader:
             {"name": "sessionid_ss", "value": session, "domain": ".tiktok.com", "path": "/"},
         ]
 
-    def _validate_video(self, video_path: str | Path) -> Path:
+    def _validate_video(self, video_path: Union[str, Path]) -> Path:
         """Validate video file exists and meets requirements"""
         path = Path(video_path).resolve()
 
@@ -165,7 +167,7 @@ class TikTokUploader:
         self,
         page: Page,
         timeout_seconds: int = 60,
-        on_progress: Callable[[int], None] | None = None,
+        on_progress: Optional[Callable[[int], None]] = None,
     ) -> bool:
         """Wait for upload to complete, return True if successful"""
         for i in range(timeout_seconds // 5):
@@ -196,11 +198,11 @@ class TikTokUploader:
 
     def upload(
         self,
-        video: str | Path,
+        video: Union[str, Path],
         description: str,
         *,
         visibility: Literal["everyone", "friends", "private"] = "everyone",
-        on_progress: Callable[[int], None] | None = None,
+        on_progress: Optional[Callable[[int], None]] = None,
     ) -> UploadResult:
         """
         Upload a video to TikTok.
@@ -315,9 +317,9 @@ class TikTokUploader:
                 if self.debug:
                     try:
                         page.screenshot(path="debug_error.png")
-                    except:
+                    except Exception:
                         pass
-                raise UploadFailedError(str(e))
+                raise UploadFailedError(str(e)) from e
             finally:
                 browser.close()
 
@@ -325,7 +327,7 @@ class TikTokUploader:
         self,
         videos: list[dict],
         *,
-        on_video_complete: Callable[[int, UploadResult], None] | None = None,
+        on_video_complete: Optional[Callable[[int, UploadResult], None]] = None,
     ) -> list[UploadResult]:
         """
         Upload multiple videos.
@@ -360,10 +362,10 @@ class TikTokUploader:
 # Convenience functions
 
 def upload(
-    video: str | Path,
+    video: Union[str, Path],
     description: str,
     *,
-    session: str | None = None,
+    session: Optional[str] = None,
     visibility: Literal["everyone", "friends", "private"] = "everyone",
     headless: bool = True,
 ) -> UploadResult:
@@ -387,7 +389,7 @@ def upload(
 def upload_many(
     videos: list[dict],
     *,
-    session: str | None = None,
+    session: Optional[str] = None,
     headless: bool = True,
 ) -> list[UploadResult]:
     """Upload multiple videos (convenience function)"""

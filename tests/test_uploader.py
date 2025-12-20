@@ -2,18 +2,17 @@
 
 import base64
 import json
-import os
 from pathlib import Path
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock
 
 import pytest
 
-from tiktok_uploader.uploader import TikTokUploader, upload, MAX_VIDEO_SIZE_MB
 from tiktok_uploader.exceptions import (
-    VideoNotFoundError,
-    UnsupportedFormatError,
     LoginRequiredError,
+    UnsupportedFormatError,
+    VideoNotFoundError,
 )
+from tiktok_uploader.uploader import TikTokUploader
 
 
 class TestTikTokUploaderInit:
