@@ -40,7 +40,7 @@ def interactive_login(
 
     with sync_playwright() as p:
         # Launch visible browser
-        browser = p.chromium.launch(headless=False)
+        browser = p.chromium.launch(headless=False, args=["--disable-blink-features=AutomationControlled"])
         context = browser.new_context(viewport={"width": 1280, "height": 800})
         page = context.new_page()
 
