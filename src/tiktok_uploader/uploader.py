@@ -230,7 +230,10 @@ class TikTokUploader:
             on_progress(0)
 
         with sync_playwright() as p:
-            browser = p.chromium.launch(headless=self.headless)
+            browser = p.chromium.launch(
+                headless=self.headless,
+                args=["--disable-blink-features=AutomationControlled"]
+            )
             context = browser.new_context(viewport={"width": 1280, "height": 1024})
 
             try:
