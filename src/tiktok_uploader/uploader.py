@@ -224,7 +224,7 @@ class TikTokUploader:
             timestamp = int(time.time())
             path = f"debug_{name}_{timestamp}.png"
             page.screenshot(path=path)
-            logger.info(f"Screenshot saved: {path}")
+            logger.debug(f"Screenshot saved: {path}")
             return path
         except Exception as e:
             logger.warning(f"Failed to take screenshot: {e}")
@@ -325,7 +325,7 @@ class TikTokUploader:
                 page = context.new_page()
                 self._apply_stealth(page)
 
-                logger.info(f"Navigating to upload page...")
+                logger.debug("Navigating to upload page...")
                 page.goto(TIKTOK_UPLOAD_URL)
                 page.wait_for_timeout(3000)
 
@@ -334,7 +334,7 @@ class TikTokUploader:
 
                 # Check if we're logged in
                 current_url = page.url
-                logger.info(f"Current URL: {current_url}")
+                logger.debug(f"Current URL: {current_url}")
 
                 if "login" in current_url.lower():
                     screenshot = self._take_screenshot(page, "login_redirect") if self.debug else None
@@ -344,7 +344,7 @@ class TikTokUploader:
                     )
 
                 # Upload video file
-                logger.info("Uploading video file...")
+                logger.debug("Uploading video file...")
                 file_input = page.locator("input[type='file']")
                 file_input.set_input_files(str(video_path))
                 page.wait_for_timeout(10000)  # Wait for processing
@@ -356,7 +356,7 @@ class TikTokUploader:
                 self._dismiss_modals(page)
 
                 # Set description
-                logger.info("Setting description...")
+                logger.debug("Setting description...")
                 desc_field = page.locator("div[contenteditable='true']").first
                 desc_field.click()
                 desc_field.fill(description)
@@ -367,7 +367,7 @@ class TikTokUploader:
                     on_progress(60)
 
                 # Find and click Post button
-                logger.info("Clicking Post...")
+                logger.debug("Clicking Post...")
                 post_btn = self._find_post_button(page)
 
                 if not post_btn:
@@ -385,7 +385,7 @@ class TikTokUploader:
                     on_progress(70)
 
                 # Wait for completion
-                logger.info("Waiting for upload to complete...")
+                logger.debug("Waiting for upload to complete...")
                 success = self._wait_for_upload_complete(
                     page,
                     timeout_seconds=self.timeout // 1000,
